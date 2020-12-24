@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::share('versao', '1.0');
-        View::share('nomeProjeto', 'Larave1');
+        View::share('nomeProjeto', '');
+
+        Blade::component('components.alert', 'alert');
     }
 }

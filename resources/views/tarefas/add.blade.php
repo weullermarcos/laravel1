@@ -6,20 +6,23 @@
 
     <h1> Adicionar Tarefa: </h1>
 
-    @if(session('Alerta'))
+    @if($errors->any())
+
         <x-alert>
 
             @slot('type')
-                {{session('Alerta')}}
+                @foreach($errors->all() as $error)
+                        {{$error}} <br/>
+                @endforeach
             @endslot
-
         </x-alert>
+
     @endif
 
-
+    <br/><br/>
     <form method="POST" action="">
         @csrf
-        Titulo <input type="text" name="titulo"> <br/>
+        Titulo <input type="text" name="titulo"> <br/><br/>
         <input type="submit" value="Enviar">
     </form>
 

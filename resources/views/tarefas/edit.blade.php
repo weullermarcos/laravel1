@@ -6,16 +6,18 @@
 
     <h1> Editar Tarefa: </h1>
 
-    @if(session('Alerta'))
+    @if($errors->any())
+
         <x-alert>
 
             @slot('type')
-                {{session('Alerta')}}
+                @foreach($errors->all() as $error)
+                    {{$error}} <br/>
+                @endforeach
             @endslot
-
         </x-alert>
-    @endif
 
+    @endif
 
     <form method="POST" action="">
         @csrf

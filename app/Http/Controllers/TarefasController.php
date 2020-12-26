@@ -26,25 +26,23 @@ class TarefasController extends Controller
 
     public function addAction(Request $request)
     {
-        //verificando se o título está preenchido
-        if($request->filled('titulo')){
 
-            //recuperando o título
-            $titulo = $request->input('titulo');
+        //criando validações para os parametros do formulario
+        $request->validate([
 
-            DB::insert('INSERT INTO tarefas (titulo) VALUES (:titulo)', [
-                'titulo' => $titulo
-            ]);
+            'titulo' => ['required', 'string'] //validações para o campo titulo (obrigatorio e se é uma string)
 
-            //redireciona para a tela de listagem de tarefas
-            return redirect()-> route('tarefas.list');
+        ]);
 
-        }
-        else{
+        //recuperando o título
+        $titulo = $request->input('titulo');
 
-            //retorna com uma mensagem de erro;
-            return redirect()->route('tarefas.add')->with('Alerta','Você não preencheu o titulo');
-        }
+        DB::insert('INSERT INTO tarefas (titulo) VALUES (:titulo)', [
+            'titulo' => $titulo
+        ]);
+
+        //redireciona para a tela de listagem de tarefas
+        return redirect()-> route('tarefas.list');
 
     }
 
@@ -70,27 +68,24 @@ class TarefasController extends Controller
     public function editAction(Request $request, $id)
     {
 
-        if($request->filled('titulo')){
+        //criando validações para os parametros do formulario
+        $request->validate([
 
-            //recuperando o titulo passado como parametro
-            $titulo = $request->input('titulo');
+            'titulo' => ['required', 'string'] //validações para o campo titulo (obrigatorio e se é uma string)
 
-            DB::update('UPDATE tarefas SET titulo = :titulo WHERE id = :id', [
+        ]);
 
-                'titulo' => $titulo,
-                'id' => $id
+        //recuperando o titulo passado como parametro
+        $titulo = $request->input('titulo');
 
-            ]);
+        DB::update('UPDATE tarefas SET titulo = :titulo WHERE id = :id', [
 
-            return redirect()->route('tarefas.list');
-        }
-        else{
+            'titulo' => $titulo,
+            'id' => $id
 
-            //retorna com uma mensagem de erro;
-            return redirect()
-                ->route('tarefas.edit', ['id' => $id])
-                ->with('Alerta','Você não preencheu o titulo');
-        }
+        ]);
+
+        return redirect()->route('tarefas.list');
     }
 
     public function delete($id)

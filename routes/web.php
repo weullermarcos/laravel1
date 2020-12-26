@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TarefasController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,5 +89,22 @@ Route::prefix('/config')->group(function(){
 Route::fallback(function (){
 
     return view('404');
+});
+
+//criando agrupamento de rotas para tarefas
+Route::prefix('/tarefas')->group(function (){
+
+    Route::get('/', [TarefasController::class, 'list'])->name('tarefas.list'); //listagem de tarefas
+
+    Route::get('add', [TarefasController::class, 'add'])->name('tarefas.add'); //tela de adição
+    Route::post('add', [TarefasController::class, 'addAction']); //Ação de adição
+
+    Route::get('edit/{id}', [TarefasController::class, 'edit'])->name('tarefas.edit'); //tela de edição
+    Route::post('edit/{id}', [TarefasController::class, 'editAction']); //Ação de edição
+
+    Route::get('delete/{id}', [TarefasController::class, 'delete'])->name('tarefas.delete'); //Ação de deletar
+
+    Route::get('marcar/{id}', [TarefasController::class, 'done'])->name('tarefas.done'); //marcar/desmarcar como resolvido
+
 });
 

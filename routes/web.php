@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+Route::get('/', function () {
+    return view('welcome');
+});
 
 //Forma de reescrever a função acima
-Route::view('/', [HomeController::class, '']);
+//Route::view('/', [HomeController::class, '']);
 
 //criando uma rota de redirecionamento de '/' para '/teste'
 //Route::redirect('/', '/teste');

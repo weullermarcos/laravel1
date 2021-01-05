@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tarefa;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,11 @@ class TarefasController extends Controller
 
     public function list()
     {
-        $list = DB::select("SELECT * FROM tarefas"); //buscando itens do banco
+        //$list = DB::select("SELECT * FROM tarefas"); //buscando itens do banco - Query
+
+        //usando eloquent para listar todas as tarefas
+        $list = Tarefa::all();
+
         return view('tarefas.list', [
 
             'list' => $list
@@ -37,9 +42,15 @@ class TarefasController extends Controller
         //recuperando o título
         $titulo = $request->input('titulo');
 
-        DB::insert('INSERT INTO tarefas (titulo) VALUES (:titulo)', [
-            'titulo' => $titulo
-        ]);
+        //insert com query
+//        DB::insert('INSERT INTO tarefas (titulo) VALUES (:titulo)', [
+//            'titulo' => $titulo
+//        ]);
+
+        //fazendo insert com eloquent
+        $tarefa = new Tarefa();
+        $tarefa->titulo = $titulo;
+        $tarefa->save();
 
         //redireciona para a tela de listagem de tarefas
         return redirect()-> route('tarefas.list');
@@ -49,14 +60,18 @@ class TarefasController extends Controller
     public function edit($id)
     {
 
-        $data = DB::select('SELECT * FROM tarefas WHERE id = :id', [
-            'id' => $id
-        ]);
+        //select com query
+//        $data = DB::select('SELECT * FROM tarefas WHERE id = :id', [
+//            'id' => $id
+//        ]);
 
-        //verificando se o id existe, caso não exista volta para a página de listagem
-        if(count($data) > 0){
+        //select com eloquent
+        $data = Tarefa::find($id);
+
+        //verificando se o elemento existe, caso não exista volta para a página de listagem
+        if($data){
             return view('tarefas.edit', [
-                'data' => $data[0]
+                'data' => $data
             ]);
         }
         else{
@@ -78,21 +93,33 @@ class TarefasController extends Controller
         //recuperando o titulo passado como parametro
         $titulo = $request->input('titulo');
 
-        DB::update('UPDATE tarefas SET titulo = :titulo WHERE id = :id', [
+//        DB::update('UPDATE tarefas SET titulo = :titulo WHERE id = :id', [
+//
+//            'titulo' => $titulo,
+//            'id' => $id
+//
+//        ]);
 
-            'titulo' => $titulo,
-            'id' => $id
+//        //opção 1 de atualização via eloquent
+//        $tarefa = Tarefa::find($id);
+//        $tarefa->titulo = $titulo;
+//        $tarefa->save();
 
-        ]);
+        //opção 2 para atualização de dados - necessário configurar fillable na model
+        Tarefa::find($id)->update(['titulo' => $titulo]);
 
         return redirect()->route('tarefas.list');
     }
 
     public function delete($id)
     {
-        DB::delete('DELETE FROM tarefas WHERE id = :id', [
-            'id' => $id
-        ]);
+        //delete via query
+//        DB::delete('DELETE FROM tarefas WHERE id = :id', [
+//            'id' => $id
+//        ]);
+
+        //deleção via eloquent
+        Tarefa::find($id)->delete();
 
         return redirect()->route('tarefas.list');
     }
@@ -100,9 +127,16 @@ class TarefasController extends Controller
     public function done($id)
     {
 
-        DB::update('UPDATE tarefas SET resolvido = 1 - resolvido WHERE id = :id', [
-            'id' => $id
-        ]);
+        $tarefa = Tarefa::find($id);
+
+        if($tarefa){
+            $tarefa->resolvido = 1 - $tarefa->resolvido;
+            $tarefa->save();
+        }
+        
+//        DB::update('UPDATE tarefas SET resolvido = 1 - resolvido WHERE id = :id', [
+//            'id' => $id
+//        ]);
 
         return redirect()->route('tarefas.list');
     }

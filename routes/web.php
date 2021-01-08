@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Admin\ConfigController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TarefasController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate']);
 
 //Forma de reescrever a função acima
 //Route::view('/', [HomeController::class, '']);
@@ -61,7 +65,7 @@ Route::get('/user/{id}', function ($id){
 Route::prefix('/config')->group(function(){
 
     //criando rotas e atribuindo responsabilidades aos métodos dos Controllers
-    Route::get('/', [ConfigController::class, 'index']);
+    Route::get('/', [ConfigController::class, 'index'])->name('config.index')->middleware('auth');
 
     //criando uma rota post
     Route::post('/', [ConfigController::class, 'index']);
@@ -108,3 +112,10 @@ Route::prefix('/tarefas')->group(function (){
 
 });
 
+//Cria todas as rotas padões em uma única linha
+Route::resource('todo', TarefasController::class);
+
+
+//Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');

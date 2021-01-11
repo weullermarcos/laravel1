@@ -13,10 +13,11 @@
 
         @csrf
 
-        <input type="text" placeholder="digite o e-mail">
-        <br/>
-        <input type="password" placeholder="digite a senha">
-        <br/>
+        <br/><br/>
+        <input type="text" name="email" placeholder="digite o e-mail">
+        <br/><br/>
+        <input type="password" name="password" placeholder="digite a senha">
+        <br/><br/>
         <input type="submit" value="login">
 
     </form>

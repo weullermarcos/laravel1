@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TarefasController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,13 @@ Route::get('/', function () {
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
+
+//rotas para registro
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 //Forma de reescrever a função acima
 //Route::view('/', [HomeController::class, '']);

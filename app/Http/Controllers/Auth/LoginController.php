@@ -50,6 +50,8 @@ class LoginController extends Controller
         //recupera parametros para autenticação
         $creds = $request->only(['email', 'password']);
 
+//        echo print_r($creds);
+
         //tenta a autenticação
         if(Auth::attempt($creds)){
 
@@ -59,6 +61,15 @@ class LoginController extends Controller
 
             return redirect()->route('login')->with('warning', 'Email ou senha inválidos',);
         }
+
+    }
+
+    public function logout(){
+
+        //deslogando
+        Auth::logout();
+
+        return redirect()->route('login');
 
     }
 

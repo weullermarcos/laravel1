@@ -24,6 +24,8 @@
 
     <h1> CONFIG </h1>
 
+    <a href="/logout">Desconectar</a>
+
     <p>Meu nome é {{$nome}}</p>
     <p>Minha idade é {{$idade}}</p>
 

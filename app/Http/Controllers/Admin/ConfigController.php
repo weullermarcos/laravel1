@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 
 class ConfigController extends Controller
 {
+
+    /**
+     * ConfigController constructor.
+     */
+    public function __construct()
+    {
+        //configurando middleware para todas as actions desse controller
+        $this->middleware('auth');
+    }
+
     public function index(Request $request)
     {
 

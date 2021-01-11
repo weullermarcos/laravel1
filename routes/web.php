@@ -73,7 +73,7 @@ Route::get('/user/{id}', function ($id){
 Route::prefix('/config')->group(function(){
 
     //criando rotas e atribuindo responsabilidades aos métodos dos Controllers
-    Route::get('/', [ConfigController::class, 'index'])->name('config.index')->middleware('auth');
+    Route::get('/', [ConfigController::class, 'index'])->name('config.index');
 
     //criando uma rota post
     Route::post('/', [ConfigController::class, 'index']);

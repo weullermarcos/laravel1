@@ -26,8 +26,10 @@
 
     <a href="/logout">Desconectar</a>
 
+    <hr/>
     <p>Meu nome é {{$nome}}</p>
     <p>Minha idade é {{$idade}}</p>
+    <hr/>
 
     @if($idade > 20)
         eu tenho mais do que 20 anos
@@ -35,13 +37,14 @@
         eu não tenho mais do que 20 anos
     @endif
 
-    <form method="POST">
-        @csrf
-        <br/> Nome: <input type="text" name="nome">
-        <br/> Idade: <input type="text" name="idade">
-        <br/> Nome: <input type="submit" value="Enviar">
-    </form>
-
+    @if($showform)
+        <form method="POST">
+            @csrf
+            <br/> Nome: <input type="text" name="nome">
+            <br/> Idade: <input type="text" name="idade">
+            <br/> Nome: <input type="submit" value="Enviar">
+        </form>
+    @endif
 
     <a href="/config/info"> Informações </a>
 

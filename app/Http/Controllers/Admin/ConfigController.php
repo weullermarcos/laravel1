@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ConfigController extends Controller
 {
@@ -45,12 +47,25 @@ class ConfigController extends Controller
 //            echo "<br/> NOME não veio";
 //        }
 
-        $nome = "Weuller";
+        //recuperando o usuário logado
+        $user = $request->user();
+        $nome = $user->name;
         $idade = 28;
+
+        if(Gate::allows('see-form')){
+
+            echo "Este usuário pode ver o form";
+        }
+        else{
+            echo "Este usuário NÃO pode ver o form";
+        }
 
         $lista = ['farinha', 'ovo', 'leite', 'etc'];
 
-        return view('admin.config', ['nome' => $nome, 'idade'=> $idade, 'lista' => $lista]);
+        return view('admin.config', ['nome' => $nome,
+                                     'idade'=> $idade,
+                                     'lista' => $lista,
+                                     'showform' => Gate::allows('see-form')]);
     }
 
     public function info()

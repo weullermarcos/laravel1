@@ -40,9 +40,20 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('login');
+        //definindo variavel login_tries na sessão e atribuindo valor 0 para o caso da variável não existir
+        $tries = $request->session()->get('login_tries', 0);
+
+        $frase = __('messages.test');
+
+        echo "FRASE: " . $frase;
+
+        return view('login', [
+
+            'tries' => $tries
+
+        ]);
     }
 
     public function authenticate(Request $request){
@@ -50,14 +61,25 @@ class LoginController extends Controller
         //recupera parametros para autenticação
         $creds = $request->only(['email', 'password']);
 
+        //recuperando informação da sessão
+        $tries = intval($request->session()->get('login_tries', 0));
+
+        $request->session()->forget('login_tries');
+
 //        echo print_r($creds);
 
         //tenta a autenticação
         if(Auth::attempt($creds)){
 
+            $request->session()->put('login_tries', 0);
             return redirect()->route('config.index');
         }
         else{
+
+
+            //incrementando o número de tentativas e setando na variável de sessão
+            $tries ++;
+            $request->session()->put('login_tries', $tries);
 
             return redirect()->route('login')->with('warning', 'Email ou senha inválidos',);
         }

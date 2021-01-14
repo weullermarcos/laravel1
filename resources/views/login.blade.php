@@ -8,6 +8,7 @@
         {{session('warning')}}
     @endif
 
+    @lang('messages.test')
 
     <form method="POST">
 
@@ -18,8 +19,15 @@
         <br/><br/>
         <input type="password" name="password" placeholder="digite a senha">
         <br/><br/>
-        <input type="submit" value="login">
+
+        @if($tries >= 3)
+            <p> @lang('messages.tryerror', ['count' => 3]) </p>
+        @else
+            <input type="submit" value="login">
+        @endif
 
     </form>
+
+    <p> Tentativas de login: {{$tries}}</p>
 
 @endsection
